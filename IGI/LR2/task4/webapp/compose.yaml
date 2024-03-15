@@ -1,0 +1,29 @@
+services:
+  web:
+    depends_on:
+      - db
+    build: backend/webapp/
+    ports:
+      - 8080:8080
+      # - 443:443
+    networks:
+      - web-db
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: webappdb
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    networks:
+      - web-db
+networks:
+  web-db:
+    driver: bridge
+
